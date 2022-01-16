@@ -8,12 +8,11 @@ object Actions {
 
     val openHomePage: HttpRequestActionBuilder = http("open homePage")
         .get("/webtours/")
-        .resources(
-            http("get userSession")
-                .get("/cgi-bin/nav.pl?in=home")
-                .check(css("[name='userSession']", "value").exists())
-                .check(css("[name='userSession']", "value").saveAs("userSession"))
-        )
+
+    val getUserSession: HttpRequestActionBuilder = http("get userSession")
+        .get("/cgi-bin/nav.pl?in=home")
+        .check(css("[name='userSession']", "value").exists())
+        .check(css("[name='userSession']", "value").saveAs("userSession"))
 
     val login: HttpRequestActionBuilder = http("login")
         .post("/cgi-bin/login.pl")
