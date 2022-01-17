@@ -6,7 +6,7 @@ import io.gatling.javaapi.http.HttpDsl.*
 import webtours.CommonScenario.scn
 import java.time.Duration
 
-class BuyFlight : Simulation() {
+class LongBuyFlight : Simulation() {
 
     private val httpProtocol = http
         .baseUrl("http://www.load-test.ru:1080")
@@ -19,15 +19,12 @@ class BuyFlight : Simulation() {
 
     init {
         setUp(
-            scn.injectOpen(
-                incrementUsersPerSec(1.0)
-                .times(10)
-                .eachLevelLasting(60)
-                .startingFrom(1.0),
-                constantUsersPerSec(10.0).during(600)
-            )
+        scn.injectClosed(
+            rampConcurrentUsers(0).to(5).during(60),
+            constantConcurrentUsers(5).during(3540)
+        )
         )
             .protocols(httpProtocol)
-            .maxDuration(Duration.ofMinutes(40))
+            .maxDuration(Duration.ofMinutes(70))
     }
 }
